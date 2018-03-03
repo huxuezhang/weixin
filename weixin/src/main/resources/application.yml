@@ -2,7 +2,6 @@ server:
   port: 8080
   servlet:
     context-path: /weixin/
-// settings
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
