@@ -35,7 +35,7 @@ public class MessageController {
         String MsgType = map.get("MsgType");
         String Content = map.get("Content");
 
-        String message = null;
+        String message = "";
         //处理文本类型，实现输入1，回复相应的封装的内容
         if("text".equals(MsgType)){
             if("1".equals(Content)){
