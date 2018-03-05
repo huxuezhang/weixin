@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public class CheckUtil {
 
-    private static final String token = "自己设置,要与微信页面设置的一致";
+    private static final String token = "hxz123456";
     public static boolean checkSignature(String signature,String timestamp,String nonce){
         String[] str = new String[]{token,timestamp,nonce};
         //排序
