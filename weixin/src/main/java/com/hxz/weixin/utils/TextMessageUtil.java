@@ -30,7 +30,7 @@ public class TextMessageUtil{
         text.setToUserName(FromUserName);
         text.setFromUserName(ToUserName);
         text.setContent("欢迎关注机械振动工程党支部");
-        text.setCreateTime(new Date().getTime());
+        text.setCreateTime(System.currentTimeMillis());
         text.setMsgType("text");
         return  messageToxml(text);
     }
