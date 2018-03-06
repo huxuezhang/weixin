@@ -3,8 +3,6 @@ package com.hxz.weixin.utils;
 import com.hxz.weixin.dto.MessageText;
 import com.thoughtworks.xstream.XStream;
 
-import java.util.Date;
-
 /**
  * 类名称: MessageTest
  * 类描述: 消息内容实体
@@ -29,7 +27,7 @@ public class TextMessageUtil{
         MessageText text = new MessageText();
         text.setToUserName(FromUserName);
         text.setFromUserName(ToUserName);
-        text.setContent("欢迎关注机械振动工程党支部");
+        text.setContent("欢迎关注胡学长工作室");
         text.setCreateTime(System.currentTimeMillis());
         text.setMsgType("text");
         return  messageToxml(text);

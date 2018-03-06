@@ -1,6 +1,6 @@
 package com.hxz.weixin.controller;
 
-import com.hxz.weixin.utils.CheckUtil;
+import com.hxz.weixin.utils.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 /**
  *
@@ -18,8 +19,9 @@ import java.io.PrintWriter;
  * 创建时间:2018年3月4日
  */
 @Controller
+@RequestMapping(value = "wx")
 public class LoginController {
-    @RequestMapping(value = "wx",method= RequestMethod.GET)
+    @RequestMapping(method= RequestMethod.GET)
     public void login(HttpServletRequest request, HttpServletResponse response){
         System.out.println("success");
         String signature = request.getParameter("signature");
@@ -39,5 +41,46 @@ public class LoginController {
             out.close();
         }
 
+    }
+
+
+    @RequestMapping(method= RequestMethod.POST)
+    public void dopost(HttpServletRequest request, HttpServletResponse response){
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = null;
+        //将微信请求xml转为map格式，获取所需的参数
+        Map<String,String> map = MessageUtil.xmlToMap(request);
+        String ToUserName = map.get("ToUserName");
+        String FromUserName = map.get("FromUserName");
+        String MsgType = map.get("MsgType");
+        String Content = map.get("Content");
+
+        String message = "";
+        //处理文本类型，实现输入1，回复相应的封装的内容
+        if("text".equals(MsgType)){
+            if("1".equals(Content)){
+                TextMessageUtil textMessage = new TextMessageUtil();
+                message = textMessage.initMessage(FromUserName, ToUserName);
+            }
+            if("2".equals(Content)){
+                String accessToken  = WeiXinUtil.getAccess_Token();
+                String menu = MenuUtil.initMenu();
+                System.out.println(menu);
+                int result = MenuUtil.createMenu(accessToken,menu);
+                if(result==0){
+                    System.out.println("菜单创建成功");
+                }else{
+                    System.out.println("错误码"+result);
+                }
+            }
+        }
+        try {
+            out = response.getWriter();
+            out.write(message);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        out.close();
     }
 }
