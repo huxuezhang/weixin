@@ -67,7 +67,7 @@ public class MenuUtil {
 
         //封装菜单
         Menu menu = new Menu();
-        menu.setButton(new Button[]{button11});
+        menu.setButton(new Button[]{button11,button21,button});
         return JSONObject.fromObject(menu).toString();
     }
 }
