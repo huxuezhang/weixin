@@ -10,7 +10,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -93,18 +96,19 @@ public class WeiXinUtil {
      * 获取凭证
      * @return
      */
-    public static String  getAccess_Token(){
-        System.out.println("从数据库中获取access_token");
+    public static String  getAccess_Token(HttpServletRequest request){
+        System.out.println("从session取access_token");
+        HttpSession session = request.getSession();
+        String access_token = (String) session.getAttribute("access_token");
 //        Jedis jedis  = RedisUtil.getJedis();
 //        String access_token = jedis.get("access_token");
         // TO DO
-//        if(access_token==null){
-//            AccessToken token = getAccessToken();
-//            access_token = token.getAccess_token();
-//        }
-//        RedisUtil.returnResource(jedis);
-        AccessToken token = getAccessToken();
-        String access_token = token.getAccess_token();
+        if(StringUtils.isEmpty(access_token)){
+            AccessToken token = getAccessToken();
+            access_token = token.getAccess_token();
+            session.setAttribute("access_token",access_token);
+            session.setMaxInactiveInterval(token.getExpires_in());
+        }
         return access_token;
     }
 

@@ -63,7 +63,7 @@ public class LoginController {
                 message = textMessage.initMessage(FromUserName, ToUserName);
             }
             if("2".equals(Content)){
-                String accessToken  = WeiXinUtil.getAccess_Token();
+                String accessToken  = WeiXinUtil.getAccess_Token(request);
                 String menu = MenuUtil.initMenu();
                 System.out.println(menu);
                 int result = MenuUtil.createMenu(accessToken,menu);
@@ -83,4 +83,6 @@ public class LoginController {
         }
         out.close();
     }
+
+
 }
