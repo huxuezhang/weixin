@@ -1,5 +1,7 @@
 package com.hxz.weixin.dto;
 
+import lombok.Data;
+
 /**
  *
  * 类名称: Menu
@@ -7,15 +9,9 @@ package com.hxz.weixin.dto;
  * @author yuanjun
  * 创建时间:2017年12月8日下午8:40:18
  */
+@Data
 public class Menu {
 
     private Button[] button;
 
-    public Button[] getButton() {
-        return button;
-    }
-
-    public void setButton(Button[] button) {
-        this.button = button;
-    }
 }
