@@ -1,5 +1,7 @@
 package com.hxz.weixin.utils;
 
+import com.hxz.weixin.domain.AllEnv;
+import com.hxz.weixin.repository.AllEnvRepository;
 import com.hxz.weixin.security.AccessToken;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
@@ -10,8 +12,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -23,15 +27,12 @@ import java.io.IOException;
  * @author xueqin
  * 创建时间:2018年3月6日
  */
+@Component
 public class WeiXinUtil {
-    /**
-     * 开发者id
-     */
-    private static final String APPID = "wx73548891da5db11e";
-    /**
-     * 开发者秘钥
-     */
-    private static final String APPSECRET="a22e3a44eabf1196d4d505afc062e6eb";
+
+    @Resource
+    private static AllEnvRepository allEnvRepository;
+
     private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?"
             + "grant_type=client_credential&appid=APPID&secret=APPSECRET";
     /**
@@ -81,7 +82,9 @@ public class WeiXinUtil {
         System.out.println("从接口中获取");
 //        Jedis jedis  = RedisUtil.getJedis();
         AccessToken token = new AccessToken();
-        String url = ACCESS_TOKEN_URL.replace("APPID", APPID).replace("APPSECRET", APPSECRET);
+        AllEnv appIDEnv = allEnvRepository.findByUserNameAndKey(System.getenv().get("USERNAME"),"AppID");
+        AllEnv appsecretEnv = allEnvRepository.findByUserNameAndKey(System.getenv().get("USERNAME"),"AppSecret");
+        String url = ACCESS_TOKEN_URL.replace("APPID", appIDEnv.getValue()).replace("APPSECRET", appsecretEnv.getValue());
         JSONObject json = doGetstr(url);
         if(json!=null){
             token.setAccess_token(json.getString("access_token"));
