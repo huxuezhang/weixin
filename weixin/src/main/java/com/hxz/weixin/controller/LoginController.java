@@ -1,6 +1,9 @@
 package com.hxz.weixin.controller;
 
+import com.hxz.weixin.service.UserService;
 import com.hxz.weixin.utils.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +23,12 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "wx")
+@Slf4j
 public class LoginController {
+
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method= RequestMethod.GET)
     public void login(HttpServletRequest request, HttpServletResponse response){
         System.out.println("success");
@@ -46,24 +54,26 @@ public class LoginController {
 
     @RequestMapping(method= RequestMethod.POST)
     public void dopost(HttpServletRequest request, HttpServletResponse response){
+        String accessToken  = WeiXinUtil.getAccess_Token(request);
         response.setCharacterEncoding("utf-8");
         PrintWriter out = null;
         //将微信请求xml转为map格式，获取所需的参数
         Map<String,String> map = MessageUtil.xmlToMap(request);
-        String ToUserName = map.get("ToUserName");
-        String FromUserName = map.get("FromUserName");
-        String MsgType = map.get("MsgType");
-        String Content = map.get("Content");
+        String toUserName = map.get("ToUserName");
+        String fromUserName = map.get("FromUserName");
+        String msgType = map.get("MsgType");
+        String content = map.get("Content");
+        String event = map.get("Event");
 
         String message = "";
+
         //处理文本类型，实现输入1，回复相应的封装的内容
-        if("text".equals(MsgType)){
-            if("1".equals(Content)){
+        if("text".equals(msgType)){
+            if("1".equals(content)){
                 TextMessageUtil textMessage = new TextMessageUtil();
-                message = textMessage.initMessage(FromUserName, ToUserName);
+                message = textMessage.initMessage(fromUserName, toUserName);
             }
-            if("2".equals(Content)){
-                String accessToken  = WeiXinUtil.getAccess_Token(request);
+            if("2".equals(content)){
                 String menu = MenuUtil.initMenu();
                 System.out.println(menu);
                 int result = MenuUtil.createMenu(accessToken,menu);
@@ -73,6 +83,15 @@ public class LoginController {
                     System.out.println("错误码"+result);
                 }
             }
+        } else if("event".equalsIgnoreCase(msgType)) {
+            if ("subscribe".equalsIgnoreCase(event)) {
+                userService.saveUser(accessToken, toUserName);
+            } else if("unsubscribe".equalsIgnoreCase(event)) {
+                userService.delUser(toUserName);
+            } else {
+                log.error("");
+            }
+
         }
         try {
             out = response.getWriter();
@@ -83,6 +102,8 @@ public class LoginController {
         }
         out.close();
     }
+
+
 
 
 }
