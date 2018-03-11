@@ -28,10 +28,12 @@ public class WeiXinUtil {
      * 开发者id
      */
     private static final String APPID = "wx73548891da5db11e";
+    //private static final String APPID = "wxc02433ca89d17343";
     /**
      * 开发者秘钥
      */
     private static final String APPSECRET="a22e3a44eabf1196d4d505afc062e6eb";
+    //private static final String APPSECRET="ffb6d6c1222dc0ba3049a1c0d68ca931";
     private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?"
             + "grant_type=client_credential&appid=APPID&secret=APPSECRET";
     /**
