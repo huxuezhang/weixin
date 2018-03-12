@@ -30,17 +30,17 @@ public class MessageController {
         PrintWriter out = null;
         //将微信请求xml转为map格式，获取所需的参数
         Map<String,String> map = MessageUtil.xmlToMap(request);
-        String ToUserName = map.get("ToUserName");
-        String FromUserName = map.get("FromUserName");
-        String MsgType = map.get("MsgType");
-        String Content = map.get("Content");
+        String toUserName = map.get("ToUserName");
+        String fromUserName = map.get("FromUserName");
+        String msgType = map.get("MsgType");
+        String content = map.get("Content");
 
         String message = "";
         //处理文本类型，实现输入1，回复相应的封装的内容
-        if("text".equals(MsgType)){
-            if("1".equals(Content)){
+        if("text".equals(msgType)){
+            if("1".equals(content)){
                 TextMessageUtil textMessage = new TextMessageUtil();
-                message = textMessage.initMessage(FromUserName, ToUserName);
+                message = textMessage.initMessage(fromUserName, toUserName);
             }
         }
         try {
