@@ -5,7 +5,7 @@ server:
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://localhost:3306/test
+    url: jdbc:mysql://localhost:3306/huxuezhang
     username: root
     password: 123
     driverClassName: com.mysql.jdbc.Driver

@@ -12,10 +12,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -30,8 +30,12 @@ import java.io.IOException;
 @Component
 public class WeiXinUtil {
 
-    @Resource
     private static AllEnvRepository allEnvRepository;
+
+    @Autowired
+    public void setAllEnvRepository(AllEnvRepository allEnvRepository) {
+        WeiXinUtil.allEnvRepository = allEnvRepository;
+    }
 
     private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?"
             + "grant_type=client_credential&appid=APPID&secret=APPSECRET";
