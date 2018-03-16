@@ -5,6 +5,7 @@ import com.hxz.weixin.repository.UserRepository;
 import com.hxz.weixin.service.UserService;
 import com.hxz.weixin.utils.WeiXinUtil;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,11 @@ public class UserServiceImpl implements UserService{
 
     private static final String url = "https://api.weixin.qq.com/cgi-bin/user/info";
     private static UserRepository userRepository;
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        UserServiceImpl.userRepository = userRepository;
+    }
 
     @Override
     public User saveUser(String accessToken, String toUserName) {

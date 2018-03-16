@@ -7,13 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name="USER")
-public class User {
+@Table(name = "USER")
+public class User implements Serializable{
 
+    @Id
+    @GenericGenerator(name = "idGenerator", strategy = "uuid")
+    @GeneratedValue(generator = "idGenerator")
     private String id;
     private String nickName;
     private int sex;
@@ -24,15 +28,4 @@ public class User {
     private LocalDateTime subcribeTime;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-
-    @Id
-    @GenericGenerator(name="idGenerator", strategy="uuid")
-    @GeneratedValue(generator="idGenerator")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }
