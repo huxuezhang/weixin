@@ -65,6 +65,8 @@ public class LoginController {
             if("1".equals(content)){
                 TextMessageUtil textMessage = new TextMessageUtil();
                 message = textMessage.initMessage(fromUserName, toUserName);
+                String token = WeiXinUtil.getAccess_Token(request);
+                userService.saveUser(token, fromUserName);
             }
             if("2".equals(content)){
                 String accessToken  = WeiXinUtil.getAccess_Token(request);
