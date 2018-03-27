@@ -14,12 +14,8 @@ import java.time.LocalDateTime;
 public class UserServiceImpl implements UserService{
 
     private static final String url = "https://api.weixin.qq.com/cgi-bin/user/info";
-    private static UserRepository userRepository;
-
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        UserServiceImpl.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Override
     public User saveUser(String accessToken, String toUserName) {
